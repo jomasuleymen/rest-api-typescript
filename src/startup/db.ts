@@ -5,7 +5,7 @@ import logger from "../utils/logger";
 export default async () => {
     const uri = config.get<string>("db");
 
-    await mongoose
+    return await mongoose
         .connect(uri)
         .then(() => {
             logger.info("Connected to database");
