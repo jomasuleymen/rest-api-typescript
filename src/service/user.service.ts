@@ -3,12 +3,8 @@ import { SchemaDefinition } from "mongoose";
 import { omit } from "lodash";
 
 export const createUser = async (newUser: SchemaDefinition<IUser>) => {
-    try {
-        const user = await userModel.create(newUser);
-        return omit(user.toJSON(), "password");
-    } catch (e: any) {
-        throw new Error(e);
-    }
+    const user = await userModel.create(newUser);
+    return omit(user.toJSON(), "password");
 };
 
 export const validateUser = async ({
@@ -25,4 +21,8 @@ export const validateUser = async ({
     if (!isValid) return false;
 
     return omit(user.toJSON(), "password");
+};
+
+export const findUser = async (user_id: string) => {
+    return await userModel.findById(user_id).lean();
 };
