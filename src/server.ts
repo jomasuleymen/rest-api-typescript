@@ -4,11 +4,13 @@ import logger from "./utils/logger";
 
 import db from "./startup/db";
 import routes from "./startup/routes";
+import middlewares from "./startup/middlewares";
 
 const app = express();
 
-routes(app);
 db();
+middlewares(app);
+routes(app);
 
 const PORT = config.get<number>("port");
 

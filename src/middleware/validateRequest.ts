@@ -9,6 +9,7 @@ export default (schema: AnyZodObject) =>
                 query: req.query,
                 params: req.params,
             });
+            return next();
         } catch (error: any) {
             return res.status(400).send(error.errors);
         }
