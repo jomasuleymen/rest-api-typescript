@@ -7,11 +7,10 @@ export default async function deserializeUser(
     res: Response,
     next: NextFunction
 ) {
-    const bearerToken = req.headers.authorization;
+    const bearerToken = req.headers["authorization"];
     if (!bearerToken) return next();
 
     const token = bearerToken.split(" ")[1];
-
     const { decoded, expired, message } = verifyToken(token, TokenType.ACCESS);
 
     if (decoded) {
@@ -35,6 +34,8 @@ export default async function deserializeUser(
             res.removeHeader("authorization");
             res.removeHeader("x-refresh");
         }
+    } else if (message) {
+        return res.status(401).send(message);
     }
 
     return next();
