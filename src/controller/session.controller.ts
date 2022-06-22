@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
     createSession,
+    findSessions,
     issueJwtTokens,
     updateSession,
 } from "../service/session.service";
@@ -26,8 +27,8 @@ export const createSessionHandler = async (req: Request, res: Response) => {
 
 export const getSessionHandler = async (req: Request, res: Response) => {
     const userId = res.locals.user._id;
-
-    return res.send(res.locals.user);
+    const sessions = await findSessions(userId);
+    return res.send(sessions);
 };
 
 export const deleteSessionHandler = async (req: Request, res: Response) => {

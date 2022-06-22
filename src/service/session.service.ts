@@ -17,7 +17,11 @@ export const updateSession = async (
 };
 
 export const findSession = async (sessionId: string): Promise<ISession> => {
-    return await sessionModel.find({ _id: sessionId, valid: true }).lean();
+    return await sessionModel.findOne({ _id: sessionId, valid: true }).lean();
+};
+
+export const findSessions = async (userId: string) => {
+    return await sessionModel.find({ user_id: userId, valid: true });
 };
 
 export const issueJwtTokens = async (user: any, session: any) => {
