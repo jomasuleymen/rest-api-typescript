@@ -14,7 +14,7 @@ db();
 middlewares(app);
 routes(app);
 
-const PORT = process.env.PORT || config.get<number>("port");
+const PORT = config.get<number>("port");
 
 app.listen(PORT, async () => {
     logger.info(`Listening port ${PORT}`);

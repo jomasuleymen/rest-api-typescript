@@ -16,8 +16,27 @@ export const updateSession = async (
     await sessionModel.updateOne({ _id: session_id, valid: true }, update);
 };
 
-export const findSession = async (session_id: string) => {
-    return await sessionModel.findOne({ _id: session_id, valid: true });
+export const findSession = async (sessionId: string): Promise<ISession> => {
+    return await sessionModel.find({ _id: sessionId, valid: true }).lean();
+};
+
+export const issueJwtTokens = async (user: any, session: any) => {
+    /* issue new access token */
+    const accessToken = signToken(
+        genJwtPayload(user, session),
+        TokenType.ACCESS
+    );
+
+    /* issue new refresh token */
+    const refreshToken = signToken(
+        genJwtPayload(user, session),
+        TokenType.REFRESH
+    );
+
+    return {
+        accessToken,
+        refreshToken,
+    };
 };
 
 export const reIssueAccessToken = async (
@@ -29,13 +48,15 @@ export const reIssueAccessToken = async (
     if (expired || !session_id) return false;
 
     const session = await findSession(session_id);
+
     if (!session) return false;
 
     const user = await findUser(session.user_id);
     if (!user) return false;
 
-    return signToken(
-        { email: user.email, name: user.name, session_id: session._id },
-        TokenType.ACCESS
-    );
+    return signToken(genJwtPayload(user, session), TokenType.ACCESS);
 };
+
+function genJwtPayload(user: any, session: any) {
+    return { ...user, session_id: session._id };
+}

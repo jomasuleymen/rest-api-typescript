@@ -24,5 +24,6 @@ export const validateUser = async ({
 };
 
 export const findUser = async (user_id: string) => {
-    return await userModel.findById(user_id).lean();
+    const user = await userModel.findById(user_id);
+    return omit(user?.toJSON(), "password");
 };

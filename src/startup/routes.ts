@@ -7,7 +7,7 @@ import {
 import { userRegister } from "../controller/user.controller";
 import requireUser from "../middleware/requireUser";
 
-import validateResource from "../middleware/validateRequest";
+import validateResource from "../middleware/validateResource";
 import { createUserSchema, userSessionSchema } from "../schema/user.schema";
 
 const routes = (app: Express) => {

@@ -13,7 +13,7 @@ const accessPublicKey = readFile("/certificates/public_key.pem");
 const refreshPublicKey = readFile("/certificates/public_key.pem");
 
 export default {
-    port: 3000,
+    port: process.env.PORT || 3000,
     db: "mongodb://root:password@localhost:27017/",
     saltRound: 10,
     accessToken: {
